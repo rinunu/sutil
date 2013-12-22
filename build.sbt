@@ -1,5 +1,3 @@
-releaseSettings
-
 name := "sutil"
 
 scalaVersion := "2.10.2"
@@ -44,6 +42,5 @@ pomExtra :=
         <url>https://github.com/rinunu</url>
       </developer>
     </developers>
-
 
 useGpg := true
