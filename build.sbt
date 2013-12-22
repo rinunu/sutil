@@ -46,3 +46,4 @@ pomExtra :=
     </developers>
 
 
+useGpg := true
