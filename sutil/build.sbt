@@ -4,8 +4,6 @@ scalaVersion := "2.10.2"
 
 organization := "nu.rinu"
 
-version := "0.0.2-SNAPSHOT"
-
 libraryDependencies ++= Seq(
   "com.jcraft" % "jsch" % "0.1.50",
   "org.specs2" %% "specs2" % "1.13" % "test",
