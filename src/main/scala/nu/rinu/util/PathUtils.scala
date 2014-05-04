@@ -44,6 +44,10 @@ class RichPath(val impl: Path) extends AnyVal {
     val r = Files.newBufferedReader(impl, charset)
     IOUtils.using(r)(f)
   }
+
+  def write(s: String)(implicit charset: Charset) {
+    writer { w => w.write(s)}
+  }
 }
 
 /**
