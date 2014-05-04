@@ -80,5 +80,7 @@ trait PathImplicits {
 object PathImplicits extends PathImplicits
 
 object PathUtils {
-
+  def home: Path = {
+    Paths.get(System.getProperty("user.home"))
+  }
 }

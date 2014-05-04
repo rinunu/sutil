@@ -5,6 +5,7 @@ scalaVersion := "2.10.2"
 organization := "nu.rinu"
 
 libraryDependencies ++= Seq(
+  "joda-time" % "joda-time" % "2.3",
   "com.jcraft" % "jsch" % "0.1.50",
   "org.specs2" %% "specs2" % "1.13" % "test",
   "com.typesafe" %% "scalalogging-slf4j" % "1.0.1"
