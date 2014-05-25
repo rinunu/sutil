@@ -1,7 +1,7 @@
 package nu.rinu.util
 
 import java.nio.file.{Files, Paths, Path}
-import java.io.{BufferedReader, BufferedWriter}
+import java.io.{InputStream, OutputStream, BufferedReader, BufferedWriter}
 import java.nio.charset.Charset
 
 class PathString(val impl: String) extends AnyVal {
@@ -29,10 +29,23 @@ class RichPath(val impl: Path) extends AnyVal {
   }
 
   def lines(implicit charset: Charset): Seq[String] = {
-    reader(r => IOUtils.lines(r).toList)
+    withReader(r => IOUtils.lines(r).toList)
   }
 
+  @deprecated
   def writer[T](f: BufferedWriter => T)(implicit charset: Charset): T = {
+    withWriter(f)
+  }
+
+  /**
+   * read and close.
+   */
+  @deprecated
+  def reader[T](f: BufferedReader => T)(implicit charset: Charset): T = {
+    withReader(f)
+  }
+
+  def withWriter[T](f: BufferedWriter => T)(implicit charset: Charset): T = {
     val w = Files.newBufferedWriter(impl, charset)
     IOUtils.using(w)(f)
   }
@@ -40,13 +53,37 @@ class RichPath(val impl: Path) extends AnyVal {
   /**
    * read and close.
    */
-  def reader[T](f: BufferedReader => T)(implicit charset: Charset): T = {
+  def withReader[T](f: BufferedReader => T)(implicit charset: Charset): T = {
     val r = Files.newBufferedReader(impl, charset)
     IOUtils.using(r)(f)
   }
 
+  def outputStream[A](): OutputStream = {
+    Files.newOutputStream(impl)
+  }
+
+  def inputStream[A](): InputStream = {
+    Files.newInputStream(impl)
+  }
+
+  def withOutputStream[A](f: OutputStream => A): A = {
+    IOUtils.using(outputStream())(f)
+  }
+
+  def withInputStream[A](f: InputStream => A): A = {
+    IOUtils.using(inputStream())(f)
+  }
+
   def write(s: String)(implicit charset: Charset) {
-    writer { w => w.write(s)}
+    withWriter { w => w.write(s)}
+  }
+
+  def exists(): Boolean = {
+    Files.exists(impl)
+  }
+
+  def isDirectory(): Boolean = {
+    Files.isDirectory(impl)
   }
 }
 
